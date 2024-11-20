@@ -83,7 +83,7 @@ export const updateDocument = async (req, res) => {
 
 export const createDocument = async (req, res) => {
   const { document } = req.body
-  const jsonPath = `./templates/${document}.json`
+  const jsonPath = path.resolve(__dirname, `../templates/${document}.json`)
 
   fs.readFile(jsonPath, 'utf8', async (err, data) => {
       if (err) {
