@@ -13,12 +13,12 @@ const templatePath = path.join(__dirname, '../templates/template-converted.docx'
 
 export const processDocument = async (req, res) => {
   const { documento } = req.body;
-  const templatePath = 'public/template.docx'; // Ruta al archivo .docx convertido
+  const templatePath = path.resolve(__dirname, '../templates/template.docx'); // Ruta al archivo .docx convertido
 
   //const jsonPath = `public/${documento}.json`
   const { documents } = await connectDB();
   let jsonPath = await documents.findOne({ _id: new ObjectId(documento) });
-  const outputPath = `public/TEA-${documento}.docx`; // Ruta para guardar el documento modificado
+  const outputPath = path.resolve(__dirname, `../templates/TEA-${documento}.docx`); // Ruta para guardar el documento modificado
 
   try {
     await modifyDocxContent(templatePath, outputPath, jsonPath);
