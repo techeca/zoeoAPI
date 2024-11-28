@@ -52,7 +52,7 @@ export async function startServer(PORT) {
             socket.emit('init', document);
         });
 
-        socket.on('edit', async ({ documentSelected, key, texto }) => {
+        socket.on('edit', async ({ documentSelected, key, texto, user, inputSelected }) => {
             console.log('Usuario conectado edit');
             let document = await documents.findOne({ _id: new ObjectId(documentSelected) });
 
@@ -69,7 +69,8 @@ export async function startServer(PORT) {
                 updatedAt: new Date()  // Cambiado de createdAt a updatedAt
             };
             await documents.updateOne({ _id: new ObjectId(documentSelected) }, { $set: updatedDocument });
-            socket.to(documentSelected).emit('update', updatedDocument);
+            const data = { updatedDocument, otherUser: user, inputSelected }
+            socket.to(documentSelected).emit('update', data);
         });
     })
 
